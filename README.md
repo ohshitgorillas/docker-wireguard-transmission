@@ -2,6 +2,7 @@
 A docker container for a WireGuard VPN client connection to a remote server, and a Transmission bittorrent daemon in a separate container which routes all traffic through the VPN.
 
 # Notes:
+- This approach isolates the VPN from the host so that it only captures Transmission's traffic. If you want the VPN to capture all traffic from the host PC as well, use "network: host" in the wireguard section of docker-compose.yaml.
 - These files are optimized for someone who has a previous installation of Transmission on the host PC that they would like to containerize. It transfers all downloads, torrents, and statistics to the container.
 - IPv6 is disabled and the WireGuard container will throw an error when it encounters a reference to IPv6 in the wg0.conf file.
 
@@ -24,4 +25,6 @@ A docker container for a WireGuard VPN client connection to a remote server, and
 
 Many thanks to https://github.com/jordanpotter/docker-wireguard for helping figure out the WireGuard container, and for writing the entrypoint.sh script, which I've modified to remove IPv6.
 
-Future updates will (hopefully) include a method of selecting the fastest server.
+Future updates will:
+1. Re-enable IPv6
+2. Determine and select the fastest server
