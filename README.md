@@ -1,6 +1,6 @@
 # docker-wireguard-transmission
 # Description:
-A containerized version of a VPN-bittorrent duo using the WireGuard VPN protocol and the Transmission bittorrent daemon built using docker and docker-compose.
+A containerized version of a VPN-bittorrent duo using the WireGuard VPN protocol and the Transmission bittorrent daemon, built using docker and docker-compose.
 
 # Notes:
 - This approach isolates the VPN from the host so that it only captures Transmission's traffic. If you want the VPN to capture traffic from the host PC, use "network: host" in the wireguard section of docker-compose.yaml.
