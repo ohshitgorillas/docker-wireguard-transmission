@@ -4,7 +4,7 @@ services:
     container_name: wireguard
     build:
       context: .
-      dockerfile: ./wireguard.Dockerfile
+      dockerfile: ./wireguard/Dockerfile
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -31,7 +31,7 @@ services:
       - wireguard
     build:
       context: .
-      dockerfile: ./transmission.Dockerfile
+      dockerfile: ./transmission/Dockerfile
     environment:
       - TZ=America/Los_Angeles
     volumes:
