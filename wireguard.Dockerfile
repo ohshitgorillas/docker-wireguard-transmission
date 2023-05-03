@@ -6,10 +6,10 @@ RUN apt-get update && apt-get install -y \
     wireguard-tools findutils 
 
 # Copy the config file
-COPY wireguard/wg0.conf /etc/wireguard/wg0.conf
+COPY wg0.conf /etc/wireguard/wg0.conf
 
 # Copy entrypoint script
-COPY wireguard/entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 
 # execute entrypoint script
 ENTRYPOINT ["/entrypoint.sh"]
