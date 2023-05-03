@@ -13,8 +13,11 @@ A docker container for a WireGuard VPN client connection to a remote server, and
 5. Run the following commands to start the containers and check for errors:
 
     $ docker-compose build
+    
     $ docker-compose up -d
+    
     $ docker-compose logs wireguard
+    
     $ docker-compose logs transmission
 
 6. Log into your Transmission daemon remotely!
