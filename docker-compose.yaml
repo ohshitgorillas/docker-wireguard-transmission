@@ -1,0 +1,40 @@
+version: "3.9"
+services:
+  wireguard:
+    container_name: wireguard
+    build:
+      context: .
+      dockerfile: ./wireguard.Dockerfile
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - TZ=America/Los_Angeles
+      - LOCAL_SUBNETS=192.168.0.0/24 # enter your local subnet or delete
+    ports:
+      - "9091:9091/tcp" # expose the RPC port
+    volumes:
+      - /lib/modules:/lib/modules
+    dns:
+      - 8.8.8.8 # use the DNS address from wg0.conf
+    sysctls:
+      net.ipv4.ip_forward: 1
+      net.ipv4.conf.all.src_valid_mark: 1
+      net.ipv6.conf.all.disable_ipv6: 1
+    privileged: true
+    restart: unless-stopped
+
+  transmission:
+    container_name: transmission
+    network_mode: service:wireguard
+    depends_on:
+      - wireguard
+    build:
+      context: .
+      dockerfile: ./transmission.Dockerfile
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - /var/lib/transmission-daemon/downloads:/var/lib/transmission-daemon/downloads:rw
+      - /home/atom/docker/transmission:/root/.config/transmission-daemon:rw
+    restart: unless-stopped
