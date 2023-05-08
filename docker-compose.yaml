@@ -38,3 +38,19 @@ services:
       - /var/lib/transmission-daemon/downloads:/var/lib/transmission-daemon/downloads:rw
       - /home/atom/docker/transmission:/root/.config/transmission-daemon:rw
     restart: unless-stopped
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx.Dockerfile
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./ssl:/etc/ssl
+    ports:
+      - "58666:58666"
+    links:
+      - wireguard:transmission
+    depends_on:
+      - transmission
+    restart: unless-stopped
