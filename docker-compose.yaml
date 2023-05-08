@@ -11,8 +11,6 @@ services:
     environment:
       - TZ=America/Los_Angeles
       - LOCAL_SUBNETS=192.168.0.0/24 # enter your local subnet or delete
-    ports:
-      - "9091:9091/tcp" # expose the RPC port
     volumes:
       - /lib/modules:/lib/modules
     dns:
@@ -48,7 +46,7 @@ services:
     volumes:
       - ./ssl:/etc/ssl
     ports:
-      - "58666:58666"
+      - "42069:42069"
     links:
       - wireguard:transmission
     depends_on:
