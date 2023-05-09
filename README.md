@@ -2,6 +2,8 @@
 # Description:
 A containerized version of a VPN-bittorrent duo using the WireGuard VPN protocol and the Transmission bittorrent daemon, built using docker and docker-compose. This isolates the VPN from the host system so that only the torrent traffic is captured. Now featuring RPC SSL encryption by nginx!
 
+Currently under re-construction and non-functional as-is.
+
 # Notes:
 - IPv6 is disabled and the WireGuard container will throw an error when it encounters any reference to IPv6. I do not trust IPv6.
 
@@ -24,5 +26,3 @@ A containerized version of a VPN-bittorrent duo using the WireGuard VPN protocol
 6. Log into your Transmission daemon remotely!
 
 Many thanks to https://github.com/jordanpotter/docker-wireguard for helping figure out the WireGuard container, and for writing the entrypoint.sh script, which I've modified to remove IPv6.
-
-Future updates will determine and select the fastest server
