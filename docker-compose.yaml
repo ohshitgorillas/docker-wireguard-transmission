@@ -47,7 +47,7 @@ services:
     image: nginx
     container_name: nginx
     volumes:
-      - ./ssl:/etc/ssl
+      - ./nginx/ssl:/etc/ssl
     ports:
       - "42069:42069" # select a HTTPS port for Transmission RPC and enter it here
     links:
