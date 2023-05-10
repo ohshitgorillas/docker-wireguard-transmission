@@ -1,4 +1,3 @@
-cat wireguard.Dockerfile 
 FROM ubuntu:latest
 
 # Install necessary packages
