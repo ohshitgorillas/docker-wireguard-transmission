@@ -15,7 +15,7 @@ if [[ -z "$configs" ]]; then
 fi
 
 config=`echo $configs | head -n 1`
-interface="${config%.*}"
+interface=wg0
 
 if [[ "$(cat /proc/sys/net/ipv4/conf/all/src_valid_mark)" != "1" ]]; then
     echo "sysctl net.ipv4.conf.all.src_valid_mark=1 is not set" >&2
@@ -24,7 +24,8 @@ fi
 
 # The net.ipv4.conf.all.src_valid_mark sysctl is set when running the Docker container, so don't have WireGuard also set it
 sed -i "s:sysctl -q net.ipv4.conf.all.src_valid_mark=1:echo Skipping setting net.ipv4.conf.all.src_valid_mark:" /usr/bin/wg-quick
-wg-quick up $interface
+python3 /select_server.py 
+wg-quick up wg0 
 
 # IPv4 kill switch: traffic must be either (1) to the WireGuard interface, (2) marked as a WireGuard packet, (3) to a local address, or (4) to the Docker network
 docker_network="$(ip -o addr show dev eth0 | awk '$3 == "inet" {print $4}')"
