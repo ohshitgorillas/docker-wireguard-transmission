@@ -1,14 +1,14 @@
+cat wireguard.Dockerfile 
 FROM ubuntu:latest
 
-# Install WireGuard and its dependencies
-# also install findutils needed for find's -printf flag
+# Install necessary packages
 RUN apt update && apt install -y \
     wireguard iproute2 iptables openresolv \
-    wireguard-tools findutils
+    wireguard-tools findutils python3 iputils-ping
 
 # Copy the wireguard config file and entrypoint script
-COPY wireguard/wg0.conf /etc/wireguard/wg0.conf
 COPY wireguard/entrypoint.sh /entrypoint.sh
+COPY wireguard/select_server.py /select_server.py
 
 # execute entrypoint script
 ENTRYPOINT ["/entrypoint.sh"]
