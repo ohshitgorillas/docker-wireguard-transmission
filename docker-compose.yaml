@@ -50,6 +50,8 @@ services:
       - ./nginx/ssl:/etc/ssl
     ports:
       - "42069:42069" # select an HTTPS port for Transmission RPC and enter it here
+    environment:
+      - TZ=America/Los_Angeles
     links:
       - wireguard:transmission
     depends_on:
