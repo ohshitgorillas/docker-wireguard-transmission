@@ -21,5 +21,9 @@ PreDown = HOMENET=192.168.0.0/16; HOMENET2=10.0.0.0/8; HOMENET3=172.16.0.0/12; i
 4. Update the transmission section of the docker-compose.yaml file with the desired location of your downloads folder.
 5. Forward the RPC port in your router and local firewall. DO NOT forward the P2P port in your router or local firewall!
 6. Run to start the containers:
-```$ docker-compose up -d
+
+```
+$ docker-compose up -d
+```
+
 7. Download your preferred remote access client for Transmission and log in to your new BitTorrent setup!
