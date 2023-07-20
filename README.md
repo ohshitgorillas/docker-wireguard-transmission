@@ -10,7 +10,10 @@ A containerized VPN-BitTorrent-nginx trio, using WireGuard VPN encryption for P2
 - All RPC traffic (remote access to Transmission) is encrypted with SSL using Nginx as a reverse HTTPS proxy.
 
 # Instructions: 
-1. Go to your VPN provider's website and generate a config file for your favorite WireGuard server. Name it wg0.conf and place it in wireguard/wg0.conf.
+1. Go to your VPN provider's website and generate an IPv4-only config file for your favorite WireGuard server. Name it wg0.conf and place it in wireguard/wg0.conf. Edit the file to include the following lines, if something similar isn't already included. This is a killswitch that prevents traffic from leaking outside of the WireGuard interface:
+    PostUp = iptables -I OUTPUT ! -o %i -m mark ! --mark wg0 -m addrtype ! --dst-type LOCAL -j REJECT
+    PreDown = iptables -D OUTPUT ! -o %i -m mark ! --mark wg0 -m addrtype ! --dst-type LOCAL -j REJECT
+
 2. Fill out the .env file with your Transmission username and password, a forwarded port from your VPN for the peer port, and a random high number port (e.g. 42069) for RPC access.
 3. Obtain a DDNS address and SSL certificates and place them in nginx/keys. I use AWS Route53 for DDNS and LetsEncrypt for SSL. If you lack these resources and want to do this for free, consider using linuxserver/swag in conjunction with duckdns as described in the SWAG documentation. This would effectively replace nginx for this project.
 4. Update the transmission section of the docker-compose.yaml file with the desired location of your downloads folder.
