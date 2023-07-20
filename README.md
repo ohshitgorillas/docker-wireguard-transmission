@@ -9,7 +9,7 @@ A containerized VPN-BitTorrent-nginx trio, using WireGuard VPN encryption for P2
 - All RPC traffic (remote access to Transmission) is encrypted with SSL using Nginx as a reverse HTTPS proxy.
 
 # Instructions: 
-1. Go to your VPN provider's website and generate an IPv4-only config file for your favorite WireGuard server. Name it wg0.conf and place it in wireguard/wg0.conf. Edit the file to include the following lines, if something similar isn't already included. This is a killswitch that prevents traffic from leaking outside of the WireGuard interface:
+1. Go to your VPN provider's website and generate an IPv4-only config file for your favorite WireGuard server. Name it wg0.conf and place it in wireguard/wg0.conf. Remove any PostUp or PreDown commands and include the below. This is a killswitch that prevents traffic from leaking outside of the WireGuard interface but allows traffic on the local network (so we can access RPC):
 
 ```
 PostUp = DROUTE=$(ip route | grep default | awk '{print $3}'); HOMENET=192.168.0.0/16; HOMENET2=10.0.0.0/8; HOMENET3=172.16.0.0/12; ip route add $HOMENET3 via $DROUTE;ip route add $HOMENET2 via $DROUTE; ip route add $HOMENET via $DROUTE;iptables -I OUTPUT -d $HOMENET -j ACCEPT;iptables -A OUTPUT -d $HOMENET2 -j ACCEPT; iptables -A OUTPUT -d $HOMENET3 -j ACCEPT;  iptables -A OUTPUT ! -o %i -m mark ! --mark $(wg show %i fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
