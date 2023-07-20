@@ -1,61 +1,50 @@
 version: "3.9"
 services:
   wireguard:
+    image: linuxserver/wireguard:latest
     container_name: wireguard
-    build:
-      context: .
-      dockerfile: ./wireguard.Dockerfile
     cap_add:
       - NET_ADMIN
-      - SYS_MODULE
     environment:
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Los_Angeles
-      - LOCAL_SUBNETS=192.168.0.0/24 # enter your local subnet or delete to prevent local network traffic
     volumes:
-      - /lib/modules:/lib/modules
-      - ./wireguard/configs:/etc/wireguard
-    dns:
-      - 8.8.8.8 # enter the DNS value(s) from your wireguard config files here
+      - ./wireguard/wgo.conf:/config/wg0.conf
     sysctls:
-      net.ipv4.ip_forward: 1
       net.ipv4.conf.all.src_valid_mark: 1
-      net.ipv6.conf.all.disable_ipv6: 1
-    privileged: true
+    ports:
+      - 9091:9091
     restart: unless-stopped
 
   transmission:
+    image: linuxserver/transmission:latest
     container_name: transmission
-    build:
-      context: .
-      dockerfile: ./transmission.Dockerfile
-    network_mode: service:wireguard
+    network_mode: service:airvpn
     depends_on:
       - wireguard
-    environment:
-      - TZ=America/Los_Angeles
     volumes:
-      - ./transmission:/root/.config/transmission-daemon:rw
+      - ./transmission/config:/config:rw
       - /downloads:/downloads:rw
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    env_file:
+      - ./.env
     restart: unless-stopped
 
   nginx:
-    build:
-      context: .
-      dockerfile: ./nginx.Dockerfile
-    image: nginx
     container_name: nginx
+    image: nginx:latest
     volumes:
-      - ./nginx/ssl:/etc/ssl
+      - ./nginx/log:/var/log/nginx
+      - ./nginx/keys:/config/keys
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    env_file:
+      - ./.env
     ports:
-      - "42069:42069" # select an HTTPS port for Transmission RPC and enter it here
-    environment:
-      - TZ=America/Los_Angeles
-    links:
-      - wireguard:transmission
+      - ${RPCPORT}:80
     depends_on:
       - transmission
-    sysctls:
-      net.ipv6.conf.all.disable_ipv6: 1
     restart: unless-stopped
