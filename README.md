@@ -5,7 +5,6 @@ A containerized VPN-BitTorrent-nginx trio, using WireGuard VPN encryption for P2
 # Features:
 - All BitTorrent traffic is encrypted through WireGuard VPN, which offers superior performance to OpenVPN.
 - Containerization isolates VPN from host system, capturing only BitTorrent traffic. This is great for PCs since many websites block or restrict VPN users; turn your PC's VPN off and on as needed without needing to remember to stop and start your torrents every time. This is also great for servers as it prevents the VPN from capping your speed and uncomplicates hosting of other services.
-- Containerization makes for an effective killswitch since the Transmission container runs in network_mode: service:wireguard
 - Uses Transmission as a BitTorrent daemon, which offers a web interface and robust remote interface apps for all platforms.
 - All RPC traffic (remote access to Transmission) is encrypted with SSL using Nginx as a reverse HTTPS proxy.
 
