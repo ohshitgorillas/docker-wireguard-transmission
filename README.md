@@ -11,8 +11,10 @@ A containerized VPN-BitTorrent-nginx trio, using WireGuard VPN encryption for P2
 
 # Instructions: 
 1. Go to your VPN provider's website and generate an IPv4-only config file for your favorite WireGuard server. Name it wg0.conf and place it in wireguard/wg0.conf. Edit the file to include the following lines, if something similar isn't already included. This is a killswitch that prevents traffic from leaking outside of the WireGuard interface:
-    PostUp = iptables -I OUTPUT ! -o %i -m mark ! --mark wg0 -m addrtype ! --dst-type LOCAL -j REJECT
-    PreDown = iptables -D OUTPUT ! -o %i -m mark ! --mark wg0 -m addrtype ! --dst-type LOCAL -j REJECT
+
+PostUp = iptables -I OUTPUT ! -o %i -m mark ! --mark wg0 -m addrtype ! --dst-type LOCAL -j REJECT
+
+PreDown = iptables -D OUTPUT ! -o %i -m mark ! --mark wg0 -m addrtype ! --dst-type LOCAL -j REJECT
 
 2. Fill out the .env file with your Transmission username and password, a forwarded port from your VPN for the peer port, and a random high number port (e.g. 42069) for RPC access.
 3. Obtain a DDNS address and SSL certificates and place them in nginx/keys. I use AWS Route53 for DDNS and LetsEncrypt for SSL. If you lack these resources and want to do this for free, consider using linuxserver/swag in conjunction with duckdns as described in the SWAG documentation. This would effectively replace nginx for this project.
@@ -20,6 +22,7 @@ A containerized VPN-BitTorrent-nginx trio, using WireGuard VPN encryption for P2
 5. Forward the RPC port in your router and local firewall.
 6. DO NOT forward the P2P port in your router or local firewall!
 7. Run to start the containers:
+
     $ docker-compose up -d
 
 8. Download your preferred remote access client for Transmission and log in to your new BitTorrent setup!
