@@ -48,3 +48,22 @@ services:
     depends_on:
       - transmission
     restart: unless-stopped
+
+  fail2ban:
+    image: linuxserver/fail2ban:latest
+    container_name: fail2ban
+    environment:
+      - TZ=America/Los_Angeles
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - .fail2ban/config:/config
+      - /var/log:/var/log:ro
+      - ./nginx/log:/remotelogs/nginx:ro
+    depends_on:
+      - nginx
+    cap_add:
+      - NET_ADMIN
+    network_mode: "host"
+    restart: unless-stopped
+
