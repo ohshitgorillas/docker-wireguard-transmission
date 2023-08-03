@@ -1,12 +1,13 @@
 # docker-wireguard-transmission
 # Description:
-A containerized VPN-BitTorrent-nginx trio, using WireGuard VPN encryption for P2P traffic and SSL encryption for RPC access.
+A containerized VPN-BitTorrent-nginx trio, using WireGuard VPN encryption for P2P traffic and SSL encryption for RPC access. Fail2Ban now included to protect remote access.
 
 # Features:
 - All BitTorrent traffic is encrypted through WireGuard VPN, which offers superior performance to OpenVPN.
 - Containerization isolates VPN from host system, capturing only BitTorrent traffic. This is great for PCs since many websites block or restrict VPN users; turn your PC's VPN off and on as needed without needing to remember to stop and start your torrents every time. This is also great for servers as it prevents the VPN from capping your speed and uncomplicates hosting of other services.
 - Uses Transmission as a BitTorrent daemon, which offers a web interface and robust remote interface apps for all platforms.
 - All RPC traffic (remote access to Transmission) is encrypted with SSL using Nginx as a reverse HTTPS proxy.
+- Fail2Ban protects remote interface from brute force hacking attempts.
 
 # Instructions: 
 1. Go to your VPN provider's website and generate a config file for your favorite WireGuard server. Name it wg0.conf and place it in wireguard/wg0.conf. Remove any PostUp or PreDown commands and include the below in the [Interface] section. This is a killswitch that prevents traffic from leaking outside of the WireGuard interface but allows traffic on the local network (so we can access RPC):
