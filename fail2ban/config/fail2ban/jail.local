@@ -1,0 +1,23 @@
+[nginx-418]
+enabled = true
+
+[nginx-badbots]
+enabled = true
+
+[nginx-botsearch]
+enabled = true
+
+[nginx-deny]
+enabled = true
+
+[nginx-http-auth]
+enabled = true
+
+[nginx-limit-req]
+enabled = true
+
+[nginx-unauthorized]
+enabled = true
+
+[sshd]
+enabled = true
