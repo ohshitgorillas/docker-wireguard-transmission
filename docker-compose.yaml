@@ -13,6 +13,7 @@ services:
       - ./wireguard/wgo.conf:/config/wg0.conf
     sysctls:
       net.ipv4.conf.all.src_valid_mark: 1
+      net.ipv6.conf.all.disable_ipv6: 0 # optional for IPv6 support
     ports:
       - 9091:9091
     restart: unless-stopped
@@ -58,7 +59,7 @@ services:
       - PGID=1000
     volumes:
       - .fail2ban/config:/config
-      - /var/log:/var/log:ro
+      - /var/log:/var/log:ro # optional for SSH protection
       - ./nginx/log:/remotelogs/nginx:ro
     depends_on:
       - nginx
