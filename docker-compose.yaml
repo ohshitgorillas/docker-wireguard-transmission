@@ -40,7 +40,7 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx/log:/var/log/nginx
-      - ./nginx/keys:/config/keys
+      - ./nginx/keys:/etc/ssl
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     env_file:
       - ./.env
