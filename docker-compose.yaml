@@ -11,11 +11,13 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - ./wireguard/wg0.conf:/config/wg0.conf
+      - /lib/modules:/lib/modules # optional for IPv6 support
     sysctls:
       net.ipv4.conf.all.src_valid_mark: 1
       net.ipv6.conf.all.disable_ipv6: 0 # optional for IPv6 support
     ports:
       - 9091:9091
+    privileged: true # optional for IPv6 support
     restart: unless-stopped
 
   transmission:
