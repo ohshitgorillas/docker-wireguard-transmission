@@ -60,7 +60,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - .fail2ban/config:/config
+      - ./fail2ban/config:/config
       - /var/log:/var/log:ro # optional for SSH protection
       - ./nginx/log:/remotelogs/nginx:ro
     depends_on:
